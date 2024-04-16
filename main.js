@@ -27,7 +27,7 @@ var bg;
 var bullets;
 function fireBullet() {
     var bullet = bullets.create(player.x, player.y, 'bullet');
-    bullet.setScale(0.5, 0.5);
+    bullet.setScale(0.3, 0.3);
     bullet.setVelocityY(-100);
 }
 /*
@@ -41,7 +41,7 @@ function bulletHitPlayer(player, bullet) {
 function preload() {
     this.load.image('background', 'image/background.jpg');
     //this.load.image('mainplayer', 'image/player.png');
-    this.load.image('bullet', 'image/bullet2.jpg');
+    this.load.image('bullet', 'image/bullet2.png');
     this.load.spritesheet('ship3','image/spritesheets/ship3.png',{
         frameWidth: 32,
         frameHeight: 32
@@ -62,7 +62,7 @@ function create() {
     this.ship3 = this.add.sprite(config.width/2-50, config.height-50, 'ship3');
     this.ship3.angle = 180;
     this.ship3.setScale(2);
-   player = this.ship3;
+    player = this.ship3;
     bullets = this.physics.add.group();
     
     this.input.on('pointerdown',function(pointer){
@@ -71,8 +71,8 @@ function create() {
 
     
     this.input.on('pointermove', function (pointer) {
-        player.x =pointer.x;
-        player.y =pointer.y;
+       player.x =pointer.x;
+       player.y =pointer.y;
        
     });
     this.anims.create({
@@ -90,17 +90,33 @@ function create() {
         hideOnComplete: true
     });
     this.ship3.play("ship3_anim");
-    //this.ship3.setInteractive();
-   // this.input.on('gameobjectdown',this.destroyShip,this);
+    
+    this.ship3.setInteractive();
+  
+   //this.input.on('gameobjectdown',this.destroyShip,this);
 
 }
-
+/*
+function destroyShip(pointer, gameObject) {
+    gameObject.setTexture("explosion");
+    gameObject.play("explode");
+}*/
 function update() {
     bg.tilePositionY -= 1;
-    /*
-    destroyShip(pointer, gameObject); {
-        gameObject.setTexture("explosion");
-        gameObject.play("explode");
-    }*/
+    
+    if (player.y <=300)
+    {
+        console.log("11111111111111");
+        player.play('explode');
+        this.ship3 = this.add.sprite(config.width/2-50, config.height-50, 'ship3');
+        this.ship3.angle = 180;
+        this.ship3.setScale(2);
+        player = this.ship3;
+        this.ship3.play("ship3_anim");
+       // destroyShip(pointer,player);
+        
+    }
+
+  
 }
 
